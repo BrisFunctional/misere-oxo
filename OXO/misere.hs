@@ -11,6 +11,9 @@ type Board = [[Symbol]]
 blank = '-'
 symbols = ['x', 'o']
 
+cell :: Board -> CellIdx -> Symbol
+cell board idx = board !! (fst idx) !! (snd idx)
+
 -- compute_move inp = inp
 is_playing_symbol sym = or [sym == x | x <- symbols]
 count_symbols board = length $ filter is_playing_symbol board
@@ -27,7 +30,7 @@ to_board board_string =
       string_to_board board_string dim =
           take dim board_string : (string_to_board (drop dim board_string) dim)
 
--- check if the line is winning
+winning_list :: [Symbol] -> Bool
 winning_list list =
     let
         first = head list
@@ -37,9 +40,10 @@ board_lines board =
     board ++ (transpose board) ++ [diag1, diag2]
     where
       max_idx = length board - 1
-      diag1 = [board !! i !! i | i <- [0..max_idx]]
-      diag2 = [board !! i !! (max_idx - i) | i <- [0..max_idx]]
+      diag1 = [cell board (i, i) | i <- [0..max_idx]]
+      diag2 = [cell board (i, max_idx - i) | i <- [0..max_idx]]
       
+winning_board :: Board -> Bool
 winning_board board = any winning_list (board_lines board)
 
 rating = [3, 2, 3, 2, 4, 2, 3, 2, 3]
