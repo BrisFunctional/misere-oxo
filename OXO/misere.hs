@@ -24,6 +24,13 @@ string_to_board "" _ = []
 string_to_board board_string dim =
     take dim board_string : (string_to_board (drop dim board_string) dim)
 
+-- check if the line is winning
+winning_list list =
+    let
+        first = head list
+    in (is_playing_symbol first) && (all (== first) list)
+       
+
 winning_board board =
     let
         rowidxs = [3 * x | x <- [0..3]]
@@ -43,11 +50,6 @@ best_blank possible =
     let ranks = [(rating !! x, x) | x <- possible]
     in fst $ minimum ranks
 
--- check_winning_board =
-winning_list list =
-    let
-        first = list !! 0
-    in (all (== first) list) && (is_playing_symbol first)
 
 next_move :: String -> String
 next_move board =
