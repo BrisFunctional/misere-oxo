@@ -15,10 +15,14 @@ my_symbol board = symbols !! (mod (count_symbols board) 2)
 blanks = findIndices (== blank)
 make_board board idx sym = (take idx board) ++ [sym] ++ (drop (idx + 1) board)
 
--- string_to_board :: String -> [String]
--- string_to_board board_string =
---     let dim = round $ sqrt (length board_string::Int)
---     in [board_string]
+
+to_board board_string = 
+    let dim = round $ sqrt (fromIntegral $ length board_string)
+    in string_to_board board_string dim
+
+string_to_board "" _ = []
+string_to_board board_string dim =
+    take dim board_string : (string_to_board (drop dim board_string) dim)
 
 winning_board board =
     let
