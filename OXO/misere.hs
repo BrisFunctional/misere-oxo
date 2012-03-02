@@ -30,6 +30,12 @@ winning_list list =
         first = head list
     in (is_playing_symbol first) && (all (== first) list)
        
+board_lines board = (rows board) ++ (rows $ (transpose board))
+    where rows board = 
+              let
+                  diag = [board !! i !! i | i <- [0..(length board - 1)]]
+              in
+                diag : board
 
 winning_board board =
     let
