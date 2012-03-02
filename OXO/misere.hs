@@ -20,12 +20,12 @@ blanks = findIndices (== blank)
 make_board board idx sym = (take idx board) ++ [sym] ++ (drop (idx + 1) board)
 
 to_board board_string = 
-    let dim = round $ sqrt (fromIntegral $ length board_string)
-    in string_to_board board_string dim
-
-string_to_board "" _ = []
-string_to_board board_string dim =
-    take dim board_string : (string_to_board (drop dim board_string) dim)
+    string_to_board board_string dim
+    where
+      dim = round $ sqrt (fromIntegral $ length board_string)
+      string_to_board "" _ = []
+      string_to_board board_string dim =
+          take dim board_string : (string_to_board (drop dim board_string) dim)
 
 -- check if the line is winning
 winning_list list =
