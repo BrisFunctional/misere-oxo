@@ -15,7 +15,6 @@ my_symbol board = symbols !! (mod (count_symbols board) 2)
 blanks = findIndices (== blank)
 make_board board idx sym = (take idx board) ++ [sym] ++ (drop (idx + 1) board)
 
-
 to_board board_string = 
     let dim = round $ sqrt (fromIntegral $ length board_string)
     in string_to_board board_string dim
@@ -30,26 +29,14 @@ winning_list list =
         first = head list
     in (is_playing_symbol first) && (all (== first) list)
        
-board_lines board = (rows board) ++ (rows $ (transpose board))
-    where rows board = 
-              let
-                  diag = [board !! i !! i | i <- [0..(length board - 1)]]
-              in
-                diag : board
-
-winning_board board =
-    let
-        rowidxs = [3 * x | x <- [0..3]]
-        rows = [[board !! 0, board !! 1, board !! 2],
-                [board !! 3, board !! 4, board !! 5],
-                [board !! 6, board !! 7, board !! 8],
-                [board !! 0, board !! 3, board !! 6],
-                [board !! 1, board !! 4, board !! 7],
-                [board !! 2, board !! 5, board !! 8],
-                [board !! 0, board !! 4, board !! 8],
-                [board !! 2, board !! 4, board !! 6]]
-
-    in any winning_list rows
+board_lines board =
+    board ++ (transpose board) ++ [diag1, diag2]
+    where
+      max_idx = length board - 1
+      diag1 = [board !! i !! i | i <- [0..max_idx]]
+      diag2 = [board !! i !! (max_idx - i) | i <- [0..max_idx]]
+      
+winning_board board = any winning_list (board_lines board)
 
 rating = [3, 2, 3, 2, 4, 2, 3, 2, 3]
 best_blank possible =
@@ -57,7 +44,6 @@ best_blank possible =
     in fst $ minimum ranks
 
 
-next_move :: String -> String
 next_move board =
     let
         my_sym = my_symbol board
@@ -70,5 +56,5 @@ next_move board =
 -- recursively ask for a board and output the next one
 main = do
   board <- getLine
-  print $ next_move board
+  print $ next_move (to_board board)
   main
