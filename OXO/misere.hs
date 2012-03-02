@@ -4,6 +4,10 @@ import System( getArgs )
 import List
 import Random
 
+type CellIdx = (Int, Int)
+type Symbol = Char
+type Board = [[Symbol]]
+
 blank = '-'
 symbols = ['x', 'o']
 
