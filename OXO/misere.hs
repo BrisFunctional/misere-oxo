@@ -11,13 +11,15 @@ type Board = [[Symbol]]
 blank = '-'
 symbols = ['x', 'o']
 
-cell :: Board -> CellIdx -> Symbol
-cell board idx = board !! (fst idx) !! (snd idx)
-
 -- compute_move inp = inp
 is_playing_symbol sym = or [sym == x | x <- symbols]
 count_symbols board = length $ filter is_playing_symbol board
 my_symbol board = symbols !! (mod (count_symbols board) 2)
+
+cell :: Board -> CellIdx -> Symbol
+cell board idx = board !! (fst idx) !! (snd idx)
+
+cell_idxs dim = [(i, j) | i <- [0..dim], j <- [0..dim]]
 
 blanks = findIndices (== blank)
 make_board board idx sym = (take idx board) ++ [sym] ++ (drop (idx + 1) board)
