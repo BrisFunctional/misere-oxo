@@ -7,7 +7,7 @@ Bots were programmed in teams at BrisFunctional Feb 28 2012 - a ten-minute itera
 Results
 
 DonkeyBacon - 14 points
-Team Oxo    - 8 points
+Team OXO    - 8 points
 Latecomers  - 8 points
 
 Really great fun, we'll definitely do something like this again!
