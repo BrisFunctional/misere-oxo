@@ -67,7 +67,8 @@ def main():
 
         for sym in SYMBOLS:
             if board.winning(sym):
-                print("symbol %s won" % sym)
+                other = SYMBOLS[(SYMBOLS.index(sym) + 1) % 2]
+                print("symbol %s won" % other)
                 exit(0)
 
 
