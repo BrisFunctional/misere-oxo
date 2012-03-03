@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import argparse
+
 from os import path
 from sys import argv, exit
 from subprocess import Popen, PIPE
@@ -51,21 +53,33 @@ class Board(object):
         return self.board + [diag1, diag2] + self.transpose()
 
 
+def parse_arguments():
+    parser = argparse.ArgumentParser(description='parse the arguments')
+    parser.add_argument('competing_scripts',
+                        nargs='+',
+                        help='scripts to run')
+
+    return parser.parse_args()
+
 def main():
-    script = argv[1]
-    if not path.isfile(script):
-        print("script %s not found" % script)
-        exit(1)
+    ns = parse_arguments()
+    for script in ns.competing_scripts:
+        if not path.isfile(script):
+            print("script %s not found" % script)
+            exit(1)
 
     state = "---------"
     move = 0
+
+    if len(ns.competing_scripts) == 1:
+        script = ns.competing_scripts[0]
+    # TODO: create a tree to make all the scripts compete together
     while True:
         cmd = ["./%s" % script, state]
         proc = Popen(cmd, stdout=PIPE)
         state = proc.communicate()[0].decode('iso8859-1')
         board = Board(state)
         print("move %d:\n%s" % (move, str(board)))
-
         move += 1
 
         for sym in SYMBOLS:
