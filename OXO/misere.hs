@@ -1,10 +1,11 @@
 module Main (main) where
 
-import System( getArgs )
 import List
 import Random
 
+-- TODO: use data declarations if better
 type CellIdx = (Int, Int)
+type Cell = (CellIdx, Symbol)
 type Symbol = Char
 type Board = [[Symbol]]
 
@@ -19,10 +20,11 @@ my_symbol board = symbols !! (mod (count_symbols board) 2)
 cell :: Board -> CellIdx -> Symbol
 cell board idx = board !! (fst idx) !! (snd idx)
 
-cell_idxs dim = [(i, j) | i <- [0..dim], j <- [0..dim]]
+cell_idxs dim = [(i, j) | i <- [0..(dim-1)], j <- [0..(dim-1)]]
 
-blanks = findIndices (== blank)
-make_board board idx sym = (take idx board) ++ [sym] ++ (drop (idx + 1) board)
+blanks board =
+  let dim = length board
+  in [(i, j) | (i, j) <- cell_idxs dim, cell board (i, j) == blank]
 
 to_board board_string = 
     string_to_board board_string dim
