@@ -69,9 +69,10 @@ next_move board_st =
       if (winning_board (to_board next_board))
        then (make_board board_st (idx_to_pos (possible_moves !! 2) (length board)) my_sym)
        else next_board
-
+            
 -- recursively ask for a board and output the next one
 main = do
   board <- getLine
-  print $ next_move board
+  let nx = next_move board
+  mapM print (to_board $ next_move board)
   main
