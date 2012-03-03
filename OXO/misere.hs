@@ -75,4 +75,4 @@ next_move board_st =
 main = do
   args <- getArgs
   let board = head args
-  print $ next_move board
+  putStr $ next_move board
