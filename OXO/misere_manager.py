@@ -82,7 +82,7 @@ def main():
         cmd = ["./%s" % script, state]
         proc = Popen(cmd, stdout=PIPE, stdin=PIPE)
         out = proc.communicate(input=state)[0]
-        state = out.decode('iso8859-1')[1:10]
+        state = out.decode('iso8859-1')
         board = Board(state)
         print("move %d:\n%s" % (move, str(board)))
         move += 1

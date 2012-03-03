@@ -74,5 +74,5 @@ next_move board_st =
 -- recursively ask for a board and output the next one
 main = do
   board <- getLine
-  print $ next_move board
+  putStr $ next_move board
   main
