@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+
+from os import path
+from sys import argv, exit
+from subprocess import Popen, PIPE
+
 symbols = ('x', 'o')
 
 def is_winning_symbol(sym):
@@ -46,8 +52,23 @@ class Board(object):
 
 
 def main():
-    b = Board('-x-o-x--x')
-    print(b.gen_lines())
+    script = argv[1]
+    if not path.isfile(script):
+        print("script %s not found" % script)
+        exit(1)
+
+    state = "---------"
+    while True:
+        cmd = ["./%s" % script, state]
+        proc = Popen(cmd, stdout=PIPE, shell=True)
+        state = proc.communicate()[0]
+        board = Board(state)
+        print(Board(state))
+        for sym in symbols:
+            if board.winning(sym):
+                print("symbol %s won" % sym)
+                break
+
 
 if __name__ == '__main__':
     main()
