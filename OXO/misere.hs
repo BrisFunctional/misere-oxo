@@ -73,6 +73,6 @@ next_move board_st =
             
 -- recursively ask for a board and output the next one
 main = do
-  args <- getArgs
-  let board = head args
-  putStr $ next_move board
+  board <- getLine
+  print $ next_move board
+  main

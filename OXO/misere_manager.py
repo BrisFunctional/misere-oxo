@@ -59,25 +59,30 @@ def parse_arguments():
                         nargs='+',
                         help='scripts to run')
 
-    return parser.parse_args()
-
-def main():
-    ns = parse_arguments()
-    for script in ns.competing_scripts:
+    scripts = parser.parse_args().competing_scripts
+    for script in scripts:
         if not path.isfile(script):
             print("script %s not found" % script)
             exit(1)
 
+    return scripts
+    
+
+def main():
     state = "---------"
     move = 0
+    scripts = parse_arguments()
 
-    if len(ns.competing_scripts) == 1:
-        script = ns.competing_scripts[0]
+    if len(scripts) == 1:
+        script = scripts[0]
     # TODO: create a tree to make all the scripts compete together
+
     while True:
+        # TODO: check it it's possible toe use only one subprocess
         cmd = ["./%s" % script, state]
-        proc = Popen(cmd, stdout=PIPE)
-        state = proc.communicate()[0].decode('iso8859-1')
+        proc = Popen(cmd, stdout=PIPE, stdin=PIPE)
+        out = proc.communicate(input=state)[0]
+        state = out.decode('iso8859-1')[1:10]
         board = Board(state)
         print("move %d:\n%s" % (move, str(board)))
         move += 1
