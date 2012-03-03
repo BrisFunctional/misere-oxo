@@ -26,6 +26,9 @@ blanks board =
   let dim = length board
   in [(i, j) | (i, j) <- cell_idxs dim, cell board (i, j) == blank]
 
+idx_to_pos idx dim =
+    (dim * (fst idx)) + (snd idx)
+
 to_board board_string = 
     string_to_board board_string dim
     where
