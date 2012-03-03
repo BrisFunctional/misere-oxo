@@ -1,3 +1,4 @@
+-- TODO: add a way to compute the rating of the cell automatically
 module Main (main) where
 
 import List
@@ -56,11 +57,6 @@ winning_board board = any winning_list (board_lines board)
 make_board board idx sym =
   (take idx board) ++ [sym] ++ (drop (idx + 1) board)
   
-rating = [3, 2, 3, 2, 4, 2, 3, 2, 3]
-best_blank possible =
-    let ranks = [(rating !! x, x) | x <- possible]
-    in fst $ minimum ranks
-
 next_move board_st =
     let
         my_sym = my_symbol board_st
