@@ -4,6 +4,7 @@ module Main (main) where
 
 import List
 import Random
+import System (getArgs)
 
 -- TODO: use data declarations if better
 type CellIdx = (Int, Int)
@@ -72,7 +73,6 @@ next_move board_st =
             
 -- recursively ask for a board and output the next one
 main = do
-  board <- getLine
-  let nx = next_move board
-  mapM print (to_board $ next_move board)
-  main
+  args <- getArgs
+  let board = head args
+  print $ next_move board
