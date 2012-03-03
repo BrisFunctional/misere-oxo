@@ -23,7 +23,11 @@ class Board(object):
 
     def winning(self, sym):
         # any of the lines is winning
-        pass
+        for line in self.gen_lines():
+            if set([sym]) == set(line):
+                return True
+
+        return False
 
     def transpose(self):
         transp = self.board[:]
