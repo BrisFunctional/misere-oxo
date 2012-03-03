@@ -75,4 +75,3 @@ next_move board_st =
 main = do
   board <- getLine
   putStr $ next_move board
-  main

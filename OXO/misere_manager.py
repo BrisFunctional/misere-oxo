@@ -78,9 +78,9 @@ def main():
     # TODO: create a tree to make all the scripts compete together
 
     while True:
-        # TODO: check it it's possible toe use only one subprocess
         cmd = ["./%s" % script, state]
         proc = Popen(cmd, stdout=PIPE, stdin=PIPE)
+        # TODO: check it it's possible toe use only one subprocess
         out = proc.communicate(input=state)[0]
         state = out.decode('iso8859-1')
         board = Board(state)
