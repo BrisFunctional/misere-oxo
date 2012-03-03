@@ -7,17 +7,15 @@ from subprocess import Popen, PIPE
 SYMBOLS = ('x', 'o')
 
 
-def check_perfect_square(dim):
-    edge = int(dim ** 0.5)
-    assert edge * edge == dim, "the number is not a perfect square"
-    return edge
+def get_edge_size(dim):
+    size = int(dim ** 0.5)
+    assert size * size == dim, "the number is not a perfect square"
+    return size
 
 
 class Board(object):
-    """Manage the board
-    """
     def __init__(self, board_st):
-        self.dim = check_perfect_square(len(board_st))
+        self.dim = get_edge_size(len(board_st))
         self.board = [list(board_st[self.dim*x:self.dim*(x+1)]) \
                       for x in range(self.dim)]
 
@@ -25,7 +23,8 @@ class Board(object):
         return '\n'.join(' '.join(x) for x in self.board)
 
     def winning(self, sym):
-        # any of the lines is winning
+        """Check if the player with symbol sym is winning
+        """
         for line in self.gen_lines():
             if set([sym]) == set(line):
                 return True
@@ -33,6 +32,8 @@ class Board(object):
         return False
 
     def transpose(self):
+        """Transpose lines with columns
+        """
         transp = self.board[:]
         for i in range(self.dim):
             for j in range(i):
@@ -43,6 +44,8 @@ class Board(object):
         return transp
 
     def gen_lines(self):
+        """Return a list of all the game lines
+        """
         diag1 = [self.board[i][i] for i in range(self.dim)]
         diag2 = [self.board[i][self.dim-i-1] for i in range(self.dim)]
         return self.board + [diag1, diag2] + self.transpose()
