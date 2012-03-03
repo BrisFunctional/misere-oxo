@@ -53,23 +53,28 @@ board_lines board =
 winning_board :: Board -> Bool
 winning_board board = any winning_list (board_lines board)
 
+make_board board idx sym =
+  (take idx board) ++ [sym] ++ (drop (idx + 1) board)
+  
 rating = [3, 2, 3, 2, 4, 2, 3, 2, 3]
 best_blank possible =
     let ranks = [(rating !! x, x) | x <- possible]
     in fst $ minimum ranks
 
-
-next_move board =
+next_move board_st =
     let
-        my_sym = my_symbol board
+        my_sym = my_symbol board_st
+        board = to_board board_st
         possible_moves = blanks board
-        next_blank = possible_moves !! 0
-        next_board = make_board board next_blank my_sym
-    in if (winning_board next_board) then (make_board board (possible_moves !! 1) my_sym) else next_board
-                                                                                               
+        next_blank = head possible_moves
+        next_board = make_board board_st (idx_to_pos next_blank (length board)) my_sym
+    in
+      if (winning_board (to_board next_board))
+       then (make_board board_st (idx_to_pos (possible_moves !! 2) (length board)) my_sym)
+       else next_board
 
 -- recursively ask for a board and output the next one
 main = do
   board <- getLine
-  print $ next_move (to_board board)
+  print $ next_move board
   main
