@@ -4,10 +4,7 @@ from os import path
 from sys import argv, exit
 from subprocess import Popen, PIPE
 
-symbols = ('x', 'o')
-
-def is_winning_symbol(sym):
-    return sym in symbols
+SYMBOLS = ('x', 'o')
 
 
 def check_perfect_square(dim):
@@ -68,7 +65,7 @@ def main():
 
         move += 1
 
-        for sym in symbols:
+        for sym in SYMBOLS:
             if board.winning(sym):
                 print("symbol %s won" % sym)
                 exit(0)
