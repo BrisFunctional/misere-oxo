@@ -1,3 +1,4 @@
+#!/usr/bin/env runhaskell
 -- TODO: add a way to compute the rating of the cell automatically
 module Main (main) where
 
