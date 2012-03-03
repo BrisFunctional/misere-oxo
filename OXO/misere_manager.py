@@ -58,16 +58,20 @@ def main():
         exit(1)
 
     state = "---------"
+    move = 0
     while True:
         cmd = ["./%s" % script, state]
-        proc = Popen(cmd, stdout=PIPE, shell=True)
-        state = proc.communicate()[0]
+        proc = Popen(cmd, stdout=PIPE)
+        state = proc.communicate()[0].decode('iso8859-1')
         board = Board(state)
-        print(Board(state))
+        print("move %d:\n%s" % (move, str(board)))
+
+        move += 1
+
         for sym in symbols:
             if board.winning(sym):
                 print("symbol %s won" % sym)
-                break
+                exit(0)
 
 
 if __name__ == '__main__':
