@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# FIXME: fix the problem with python3, only working with python2 at the moment
+
 import argparse
 
 from os import path
@@ -24,6 +26,11 @@ class Board(object):
 
     def __str__(self):
         return '\n'.join(' '.join(x) for x in self.board)
+
+    def __iter__(self):
+        for i in range(self.dim):
+            for j in range(self.dim):
+                yield i, j, self.board[i][j]
 
     def winning(self, sym):
         """Check if the player with symbol sym is winning
@@ -60,10 +67,9 @@ class Board(object):
         next_blanks = list(self.iter_blank_cells())
 
     def iter_blank_cells(self):
-        for i in range(self.dim):
-            for j in range(self.dim):
-                if self.board[i][j] == BLANK:
-                    yield i, j
+        for i, j, content in iter(self):
+            if content == BLANK:
+                yield i, j
 
 
 def parse_arguments():
@@ -107,5 +113,14 @@ def main():
                 exit(0)
 
 
+
+def test_board():
+    state = "---------"
+    assert list(Board(state).iter_blank_cells()) == [(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
+    state = "xxxxxxxx-"
+    assert list(Board(state).iter_blank_cells()) == [(2, 2)]
+
+
 if __name__ == '__main__':
-    main()
+    # main()
+    test_board()
