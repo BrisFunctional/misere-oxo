@@ -2,13 +2,8 @@
 -- TODO: add a way to compute the rating of the cell automatically
 module Main (main) where
 
-import List
-import Random
-import System (getArgs)
-
--- TODO: use data declarations if better
+import Data.List
 type CellIdx = (Int, Int)
-type Cell = (CellIdx, Symbol)
 type Symbol = Char
 type Board = [[Symbol]]
 
