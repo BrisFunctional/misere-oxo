@@ -7,6 +7,7 @@ from sys import argv, exit
 from subprocess import Popen, PIPE
 
 SYMBOLS = ('x', 'o')
+BLANK = '-'
 
 
 def get_edge_size(dim):
@@ -51,6 +52,18 @@ class Board(object):
         diag1 = [self.board[i][i] for i in range(self.dim)]
         diag2 = [self.board[i][self.dim-i-1] for i in range(self.dim)]
         return self.board + [diag1, diag2] + self.transpose()
+
+    def next_board(self):
+        """Compute the next board, trying to maximize the results
+        """
+        new_board = self.board[:]
+        next_blanks = list(self.iter_blank_cells())
+
+    def iter_blank_cells(self):
+        for i in range(self.dim):
+            for j in range(self.dim):
+                if self.board[i][j] == BLANK:
+                    yield i, j
 
 
 def parse_arguments():
