@@ -122,5 +122,7 @@ def test_board():
 
 
 if __name__ == '__main__':
-    # main()
-    test_board()
+    if len(argv) == 1:
+        test_board()
+    else:
+        main()
