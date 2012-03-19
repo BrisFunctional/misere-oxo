@@ -1,16 +1,23 @@
+"""
+Library code to manipulate misere oxo data structures
+"""
+
+__metaclass__ = type
+
 SYMBOLS = ('x', 'o')
 BLANK = '-'
 
 
-def get_edge_size(dim):
+def _get_edge_size(dim):
     size = int(dim ** 0.5)
     assert size * size == dim, "the number is not a perfect square"
     return size
 
 
-class Board(object):
+class Board:
     def __init__(self, board_st):
-        self.dim = get_edge_size(len(board_st))
+        self.board_st = board_st
+        self.dim = _get_edge_size(len(board_st))
         self.board = [list(board_st[self.dim*x:self.dim*(x+1)]) \
                       for x in range(self.dim)]
 
@@ -31,6 +38,10 @@ class Board(object):
 
         return False
 
+    def next_playing_symbol(self):
+        NOT_BLANK = len(self.board_st) - self.board_st.count(BLANK)
+        return SYMBOLS[NOT_BLANK % 2]
+
     def transpose(self):
         """Transpose lines with columns
         """
@@ -49,12 +60,6 @@ class Board(object):
         diag1 = [self.board[i][i] for i in range(self.dim)]
         diag2 = [self.board[i][self.dim-i-1] for i in range(self.dim)]
         return self.board + [diag1, diag2] + self.transpose()
-
-    def next_board(self):
-        """Compute the next board, trying to maximize the results
-        """
-        new_board = self.board[:]
-        next_blanks = list(self.iter_blank_cells())
 
     def iter_blank_cells(self):
         for i, j, content in iter(self):
