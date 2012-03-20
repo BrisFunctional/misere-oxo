@@ -7,6 +7,8 @@ __metaclass__ = type
 SYMBOLS = ('x', 'o')
 BLANK = '-'
 
+from copy import deepcopy
+
 
 def _get_edge_size(dim):
     size = int(dim ** 0.5)
@@ -15,11 +17,10 @@ def _get_edge_size(dim):
 
 
 class Board:
-    def __init__(self, board_st):
+    def __init__(self, board_st, dim, board):
         self.board_st = board_st
-        self.dim = _get_edge_size(len(board_st))
-        self.board = [list(board_st[self.dim*x:self.dim*(x+1)]) \
-                      for x in range(self.dim)]
+        self.dim = dim
+        self.board = board
 
     def __str__(self):
         return '\n'.join(' '.join(x) for x in self.board)
@@ -28,6 +29,19 @@ class Board:
         for i in range(self.dim):
             for j in range(self.dim):
                 yield i, j, self.board[i][j]
+
+    @staticmethod
+    def board_from_string(board_st):
+        dim = _get_edge_size(len(board_st))
+        board = [list(board_st[dim*x:dim*(x+1)]) for x in range(dim)]
+
+        return Board(board_st, dim, board)
+
+
+    def new_board_with_sym(self, sym, row, col):
+        new_board = deepcopy(self)
+        new_board.board[row][col] = sym
+        return new_board
 
     def winning(self, sym):
         """Check if the player with symbol sym is winning

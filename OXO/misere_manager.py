@@ -65,7 +65,7 @@ def main():
         elif ns.mode == 'arg':
             state = _run_as_arg(script, state)
 
-        board = Board(state)
+        board = Board.board_from_string(state)
         print("move %d:\n%s" % (move, str(board)))
         move += 1
 
@@ -78,9 +78,9 @@ def main():
 
 def test_board():
     state = "---------"
-    assert list(Board(state).iter_blank_cells()) == [(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
+    assert list(Board.board_from_string(state).iter_blank_cells()) == [(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
     state = "xxxxxxxx-"
-    assert list(Board(state).iter_blank_cells()) == [(2, 2)]
+    assert list(Board.board_from_string(state).iter_blank_cells()) == [(2, 2)]
 
 
 if __name__ == '__main__':

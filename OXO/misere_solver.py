@@ -16,8 +16,12 @@ class Player:
     def next_board(self, board):
         """Compute the next board, trying to maximize the results
         """
-        new_board = self.board[:]
-        next_blanks = list(self.iter_blank_cells())
+        for pos in board.iter_blank_cells():
+            new_board = board.new_board_with_sym(self.sym, *pos)
+            if self.is_suicidal(new_board):
+                board = new_board
+            else:
+                return new_board
 
     def is_suicidal(self, board):
         return board.winning(self.sym)
@@ -25,8 +29,9 @@ class Player:
 
 def main():
     assert len(sys.argv) > 1, "you need to pass the board configuration"
-    board = Board(sys.argv[1])
+    board = Board.board_from_string(sys.argv[1])
     player = Player(board.next_playing_symbol())
+    print(player.next_board(board))
     
 
 if __name__ == '__main__':
